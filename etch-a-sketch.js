@@ -1,6 +1,6 @@
-let gridSize = 16;
+let gridSize = 50;
 let colorMode = "black";
-let etchASketchMode = false;
+let etchASketchMode = true;
 
 //handles range slider
 const rangeSlider = document.querySelector("#range-slider");
@@ -15,6 +15,7 @@ rangeSlider.oninput = function () {
 
 // if etch-a-sketch mode is on, user can draw without clicking mouse
 const etchCheckbox = document.querySelector("#etchCheckbox");
+etchCheckbox.checked = true;
 etchCheckbox.addEventListener("change", function () {
   if (this.checked) {
     etchASketchMode = true;
