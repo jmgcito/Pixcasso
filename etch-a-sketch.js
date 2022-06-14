@@ -1,6 +1,6 @@
 let gridSize = 50;
 let colorMode = "black";
-let etchASketchMode = true;
+let etchASketchMode = false;
 
 //handles range slider
 const rangeSlider = document.querySelector("#range-slider");
@@ -15,7 +15,7 @@ rangeSlider.oninput = function () {
 
 // if etch-a-sketch mode is on, user can draw without clicking mouse
 const etchCheckbox = document.querySelector("#etchCheckbox");
-etchCheckbox.checked = true;
+etchCheckbox.checked = etchASketchMode;
 etchCheckbox.addEventListener("change", function () {
   if (this.checked) {
     etchASketchMode = true;
@@ -50,6 +50,11 @@ function setButtons(mode) {
   } else {
     lightenButton.classList.toggle("button-on");
   }
+  if (mode != "eraser") {
+    eraserButton.classList.remove("button-on");
+  } else {
+    eraserButton.classList.toggle("button-on");
+  }
 }
 
 const rainbowButton = document.querySelector("#rainbow-button");
@@ -70,9 +75,22 @@ lightenButton.addEventListener("click", function () {
   setButtons(colorMode);
 });
 
+const eraserButton = document.querySelector("#eraser-button");
+eraserButton.addEventListener("click", function () {
+  toggleMode("eraser");
+  setButtons(colorMode);
+});
+
 const clearButton = document.querySelector("#clear-button");
 clearButton.addEventListener("click", function () {
   createGrid(gridSize);
+});
+// adds button pressing effect on clear button
+clearButton.addEventListener("mousedown", function () {
+  clearButton.classList.add("button-on");
+});
+clearButton.addEventListener("mouseup", function () {
+  clearButton.classList.remove("button-on");
 });
 
 // returns value from 0 to 255
@@ -92,6 +110,8 @@ function colorSquare(square) {
   //changes squares next color
   if (colorMode == "rainbow") {
     square.style.cssText = randomColor();
+  } else if (colorMode == "eraser") {
+    square.style.cssText = "filter: brightness(100%)";
   } else if (colorMode == "shade") {
     //shade mode
     if (parseInt(square.style.filter.slice(11, 14)) == 100) {
